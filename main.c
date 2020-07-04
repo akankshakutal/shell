@@ -27,8 +27,13 @@ int main(void)
 
         if (strcmp("exit", args[0]) == 0)
             return 0;
+
+        if (strcmp("cd", args[0]) == 0)
+            chdir(args[1]);
+
         if (fork() == 0)
             exit(execvp(args[0], args));
+
         wait(NULL);
     }
 }
