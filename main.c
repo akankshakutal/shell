@@ -13,20 +13,20 @@ int main(void)
         char input[256] = {0x0};
         char *ptr = input;
         char *args[64] = {NULL};
+        signal(SIGINT, SIG_DFL);
+        signal(SIGINT, SIG_IGN);
 
         fgets(input, 255, stdin);
 
         for (int i = 0; i < sizeof(args) && *ptr; ptr++)
         {
-            if (*ptr == ' ')
-                continue;
-            if (*ptr == '\n')
-                break;
             for (args[i++] = ptr; *ptr && *ptr != ' ' && *ptr != '\n'; ptr++)
                 ;
             *ptr = '\0';
         }
 
+        if (strcmp("exit", args[0]) == 0)
+            return 0;
         if (fork() == 0)
             exit(execvp(args[0], args));
         wait(NULL);
